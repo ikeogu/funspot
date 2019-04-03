@@ -1,0 +1,159 @@
+body {
+    /* background: red!important; */
+    /* display: none; */
+}
+
+.body {
+    padding-top: 50px;
+}
+
+.body,#app,.bd {
+    max-width: 1450px!important;
+}
+
+.nb {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    position: fixed!important;
+    width: 100%;
+    z-index: 2;
+}
+.navbar {
+    padding: 0 15px;
+    padding: 0.5rem 1.3rem!important;
+}
+.navb {
+    display: flex;
+    width: 100%;
+}
+
+.navb > div {
+    flex: 2;
+    margin-bottom: 0;
+}
+
+.navb > div input {
+    border-radius: 6px 0 0 6px;
+}
+
+.navb > div button {
+    border-radius: 0 6px 6px 0;
+}
+
+.navb > div {
+    display: flex;
+    margin: 0 50px;
+}
+
+.navb > ul {
+    flex: 1;
+}
+
+.menu-dots {
+    vertical-align: middle;
+}
+
+.menu-dots span {
+    height: 4px;
+    width: 4px;
+    background:red;
+    display: block;
+    margin-bottom: 4px;
+    border-radius: 50%;
+    margin: 4px auto;
+}
+
+.bar-right {
+    display: flex;
+    margin-left: 6px!important;
+}
+
+.bar-right a {
+    flex: 10;
+}
+
+.bar-right a:nth-of-type(3) {
+    flex: 1;
+}
+
+.post-cat {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.post-block {
+    flex: 1;
+    display: block!important;
+    height: 246px;
+    min-width: 205px!important;
+    max-width: 205px;
+    background: red;
+    justify-content: center;
+    margin: 6px 2px;
+}
+
+
+.cat-title span {
+    margin-left: 10px;
+    background: powderblue;
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1.2em;
+}
+
+.more-link {
+    text-align: right;
+}
+
+.more-link a {
+    display: inline-block;
+    margin-right: 10px;
+    background: brown;
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+.loader {
+    margin: 0 auto;
+    display: block;
+}
+
+.post-block > div {
+}
+
+.post-thumbnail {
+    height: 140px;
+    background: #eee;
+}
+
+.post-title {
+    height: 50px;
+    padding: 4px;
+}
+
+.post-title a {
+    font-size: 14px;
+}
+
+.post-author {
+    height: 24px;
+    padding: 4px;
+}
+
+.post-author a {
+    color: #b9b6b6;
+}
+
+.post-meta {
+    height: 24px;
+    padding: 4px;
+}
+
+.v-con {
+    width: 70%;
+    background: red;
+}

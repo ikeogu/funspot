@@ -57,9 +57,9 @@
     </div>
     <div class="nb2">
         <ul class="i-list">
-            <li><a href="#">Home</a><span class="i-underline"></span></li>
-            <li><a href="#">Trending</a><span class="i-underline"></span></li>
-            <li><a href="#">Hot</a><span class="i-underline"></span></li>
+            <li><a href="/videos">Home</a><span class="i-underline"></span></li>
+            <li><a href="{{route('latest')}}">Latest</a><span class="i-underline"></span></li>
+            <li><a href="{{route('trending')}}">Trending</a><span class="i-underline"></span></li>
             <li><a href="#">Live</a><span class="i-underline"></span></li>
             <li><a href="{{route('upload')}}">upload</a><span class="i-underline"></span></li>
         </ul>

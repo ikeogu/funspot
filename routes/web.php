@@ -29,6 +29,10 @@ Route::resource('replycomment','ReplyCommentsController');
 Route::get('comment/{key}/edit','CommentsController@edit')->name('comments.edit');
 Route::get('comment/{key}/delete','CommentsController@delete')->name('comments.delete');
 Route::get('/funspot','VideosController@video');
+Route::get('/latest_commedy','VideosController@latest')->name('latest');
+Route::get('/trending_commedy','VideosController@trending')->name('trending');
+
+Route::post('ajaxRequest', 'HomeController@ajaxRequest')->name('ajaxRequest');
 Route::resource('likes','LikeController');
 
 Route::any('/search', function () {
@@ -43,6 +47,8 @@ Route::any('/search', function () {
         return view ( 'videos.search' )->withDetails ( $v )->withMessage ( 'No Details found. Try to search again !' );
     }
 } )->name('search');
+Route::get('comment/like/{id}', ['as' => 'comment.like', 'uses' => 'LikeController@likeComment']);
+Route::get('video/like/{id}', ['as' => 'video.like', 'uses' => 'LikeController@likeVideo']);
 
 
 

@@ -3,9 +3,9 @@
 @section('content')
 
 		<div class="idx ">
-			
+			<div class="cat-title"><span>Latest</span></div>
 			<div class="post-cat well row show-grid">
-				@foreach($video as $v)
+				@foreach($ls as $v)
                     <a href="/videos/{{$v->id}}_{{$v->video_link}}{{$v->id}}{{$v->video_link}}">
 					<div class=" col-md-3 thumbnail">
 						<div class="post-thumbnail">

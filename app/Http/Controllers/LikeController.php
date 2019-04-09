@@ -10,6 +10,10 @@ use Auth;
 
 class LikeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,29 +29,34 @@ class LikeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function likeComment($id)
     {
-        //
+        // here you can check if product exists or is valid or whatever
+        $this->handleLike('App\Comment', $id);
+        return redirect()->back();
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function likeVideo($id)
     {
-        $vid = $request->id;
-        dd($vid );
-        $video = Video::find($vid);
-        
-        $likes = new Like ();
-        $like = 0;
-        $likes->like = $like;
-        $likes->likeVideo()->associate($video);
-        $likes->save();
-
+        // here you can check if product exists or is valid or whatever
+        $this->handleLike('Video', $id);
+        return redirect()->back();
+    }
+    public function handleLike($type, $id)
+    {
+        $existing_like = Like::withTrashed()->whereLikeableType($type)->whereLikeableId($id)->whereUserId(Auth::id())->first();
+        if (is_null($existing_like)) {
+            Like::create([
+                'user_id'       => Auth::id(),
+                'likeable_id'   => $id,
+                'likeable_type' => $type,
+            ]);
+        } else {
+            if (is_null($existing_like->deleted_at)) {
+                $existing_like->delete();
+            } else {
+                $existing_like->restore();
+            }
+        }
     }
 
     /**

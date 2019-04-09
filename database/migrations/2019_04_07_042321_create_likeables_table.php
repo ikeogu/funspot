@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUnlikesTable extends Migration
+
+class CreateLikeablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +14,12 @@ class CreateUnlikesTable extends Migration
      */
     public function up()
     {
-        Schema::create('unlikes', function (Blueprint $table) {
+        Schema::create('likeables', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('unlike')->default('0');
-            $table->string('unlike_video_id');
+            $table->integer('user_id');
+            $table->integer('likeable_id');
+            $table->string('likeable_type');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateUnlikesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('unlikes');
+        Schema::dropIfExists('likeables');
     }
 }

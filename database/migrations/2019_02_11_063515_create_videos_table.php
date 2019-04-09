@@ -20,7 +20,8 @@ class CreateVideosTable extends Migration
             $table->string('tag')->nullable();
             $table->string('country')->nullable();
             $table->string('video_link')->unique();
-            $table->string('user_id');
+            $table ->integer('user_id')->unsigned()->index()->nullable();
+            $table ->foreign('user_id')->references('id')->on('users');
             $table->string('view')->default('public');
             $table->string('video_file');
             $table->string('filename');

@@ -5,7 +5,7 @@
 <div class="con-single">
 	
 		<div class="col-lg-12 ">
-		<video width="1200" height="600" controls  autoplay >  
+		<video width="1200" height="400" controls  autoplay >  
 			<source src="{{URL::asset('movie.mp4')}}" type="video/mp4">  
 			<source src="{{URL::asset('movie.ogg')}}" type="video/ogg"> 
 			<source src="/storage/video-bank/{{$video->video_file}}" type="video/mp4"> 
@@ -18,20 +18,15 @@
 			<h3>{{$video->title}}</h3>
 		</div>
 		
+                                                 
 		<div class="post-meta-single">
 			<div class="row show-grid action-box">
-				<span class="col-md-3"><span>
-				<a action="{{route('likes.store')}}" method="POST">
-					
-						
-						<input type="hidden" name="id" value="{{$video->id}}">
-						
-						<button  type="submit">
-						<i class="fa fa-thumbs-up" ></i>
-					</button>
-				</a>	
-				</span></span>
-				<span class="col-md-3"><span><a href=""><i class="fa fa-thumbs-down"></i>25</a></span></span>
+				<span class="col-md-3">
+				@if ($video->isLiked)
+				  <span class="col-md-3"><span><a href="{{  route('video.like', $video->id) }}"><i class="fa fa-thumbs-down"></i>{{ $video->likes()->count() }} <</span>
+        		@else
+				  <span class="col-md-3"><span> <a href="{{ route('video.like', $video->id) }}"><i class="fa fa-thumbs-up"></i>{{ $video->likes()->count() }}</a></span></span>
+       			 @endif
 				<span class="col-md-3"><span><a href=""><i class="fa fa-list"></i><sup><i class="fa fa-plus-square"></i></sup></a></span></span>
 				<span class="col-md-3"><span><a href=""><i class="fa fa-share-square"></i><sup><i class="fa fa-user-circle"></i></sup></a></span></span>
 			</div>
@@ -109,4 +104,47 @@
 	
 </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {     
+
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+
+        $('i.fa-thumbs-up, i.fa-thumbs-down').click(function(){    
+            var id = $(this).parents(".panel").data('id');
+            var c = $('#'+this.id+'-bs3').html();
+            var cObjId = this.id;
+            var cObj = $(this);
+
+
+            $.ajax({
+               type:'POST',
+               url:'/ajaxRequest',
+               data:{id:id},
+               success:function(data){
+                  if(jQuery.isEmptyObject(data.success.attached)){
+                    $('#'+cObjId+'-bs3').html(parseInt(c)-1);
+                    $(cObj).removeClass("like-video");
+                  }else{
+                    $('#'+cObjId+'-bs3').html(parseInt(c)+1);
+                    $(cObj).addClass("like-video");
+                  }
+               }
+            });
+
+
+        });      
+
+
+        $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });                                        
+    }); 
+</script>
 @endsection

@@ -162,7 +162,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Amranidev\Laracombee\Providers\LaracombeeServiceProvider::class,
-
+        Overtrue\LaravelFollow\FollowServiceProvider::class,
+       
         /*
          * Package Service Providers...
          */
@@ -230,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'FFMpeg' => Pbmedia\LaravelFFMpeg\FFMpegFacade::class,
         'Laracombee' => Amranidev\Laracombee\facades\LaracombeeFacade::class,
+        
 
     ],
 

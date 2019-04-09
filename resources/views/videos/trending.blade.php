@@ -3,7 +3,7 @@
 @section('content')
 
 		<div class="idx ">
-			
+			<div class="cat-title"><span>Trending</span></div>
 			<div class="post-cat well row show-grid">
 				@foreach($video as $v)
                     <a href="/videos/{{$v->id}}_{{$v->video_link}}{{$v->id}}{{$v->video_link}}">

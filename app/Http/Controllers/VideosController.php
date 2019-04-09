@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 use App\Video;
+use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use FFMPEG;
 use Uuid;
+use DB;
 use FFMpeg\FFProbe;
+use App\Latest;
+use App\VideoView;
 use Illuminate\Support\Facades\File;
 use Kielabokkie\LaravelIpdata\Facades\Ipdata;
 
@@ -16,7 +20,7 @@ class VideosController extends Controller
     //
     public function __construct()
     {
-        $this->middleware('auth')->except(['index','show']);
+        $this->middleware('auth')->except(['index','show','latest','trending']);
     }
    
     public function index()
@@ -57,12 +61,28 @@ class VideosController extends Controller
      */
     public function show(Video $video)
     {
-        $video =Video::find($video->id);
         
         
+        $video = Video::find($video->id);
+        \App\VideoView::createViewLog($video);
         
         return view('videos.show', ['video'=>$video]);
         
+    }
+
+    public function trending(Video $video)
+    {
+
+        
+
+        //or add `use App\PostView;` in beginning of the file in order to use only `PostView` here 
+
+        $video = Video::join("video_views", "video_views.id", "=", "videos.id")
+            
+            ->groupBy("videos.id")
+            ->orderBy(DB::raw('COUNT(videos.id)'), 'desc')//here its very minute mistake of a paranthesis in Jean Marcos' answer, which results ASC ordering instead of DESC so be careful with this line
+            ->get([DB::raw('COUNT(videos.id) as total_views'), 'videos.*']);
+            return view('videos.trending',['video'=>$video]);
     }
 
     /**
@@ -88,6 +108,12 @@ class VideosController extends Controller
         //
     }
 
+    public function latest(){
+        $ls= Video::orderBy('created_at', 'desc')->orderBy('id', 'asc')->get();
+        ($ls);
+        return view('videos.latest',['ls'=>$ls]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -99,61 +125,7 @@ class VideosController extends Controller
         //
     }
 
-  //   public function uploadSubmit(UploadRequest $request)
-  // {
-  //   if ($request->hasFile('video')) {
-  //         $randName = Carbon::now()->timestamp;
-  //         $uploadDir = '/uploads/';
-  //         $location = $randName . '.mp4';
-  //         $fullPath = public_path() . $uploadDir . $location;
-  //         // check if 'uploads/' directory exists. If not, create it.
-  //         if(!File::exists(public_path() . $uploadDir)) {
-  //           File::makeDirectory(public_path() . $uploadDir, $mode = 0777, true, true);
-  //         }
-  //         $file = $request->file('video');
-  //         $file->move(public_path() . $uploadDir, $location);
-  //         $title = $request->input('title');
-  //         // get video thumbnail
-  //         FFMpeg::fromDisk('upload')
-  //           ->open($location)
-  //           ->getFrameFromSeconds(10)
-  //           ->export()
-  //           ->toDisk('upload')
-  //           ->save($randName . '.png');
-  //         // get video duration
-  //         $ffprobe = FFProbe::create();
-  //         $duration = $ffprobe->format($fullPath)
-  //           ->get('duration');
-  //         $duration = Carbon::createFromTimestampUTC($duration)
-  //           ->toTimeString();
-  //         // get video filesize
-  //         $filesize = File::size($fullPath);
-  //         $filesize = $this->formatBytes($filesize);
-  //         // get video bitrate
-  //         $bitrate = $ffprobe->format($fullPath)
-  //           ->get('bit_rate');
-  //         $bitrate = $this->formatBytes($bitrate);
-  //         $video = new Video();
-  //         $video->title = $title;
-  //         $video->filename = htmlspecialchars($file->getClientOriginalName());
-  //         $video->location = $uploadDir . $location;
-  //         $video->thumbnail = $uploadDir . $randName . '.png';
-  //         $video->duration = $duration;
-  //         $video->filesize = $filesize;
-  //         $video->bitrate = $bitrate;
-  //         $video->producer = auth()->user()->name;
-  //           $res = Ipdata::lookup();
-  //         $video->country = $res->country_name;
-           
-  //         $video->save();
-  //         return redirect('/')
-  //           ->withSuccess('Successfully uploaded!')
-  //           ->with([
-  //             'title' => $title
-  //           ]);
-      //}
-  //}
-  // private functions
+  
   private function formatBytes($size, $precision = 2)
   {
       $base = log($size, 1024);
@@ -194,23 +166,10 @@ class VideosController extends Controller
         // $pa =  $this->linkify($thumbnail);
         // $thumbnail->storeAs("public/video-bank/thumbnails",$pa);
         
-        $path = $video_file->storeAs('public/video-bank', $fileToUpload);
+       
         // other php codes to generate video random string id and save it with video meta to the database.
 
-         
-        
-        // $duration = $ffprobe->format($fileToUpload)
-        //   ->get('duration');
-        // $duration = Carbon::createFromTimestampUTC($duration)
-        //   ->toTimeString();
-        // // get video filesize
-        // $filesize = File::size($fileToUpload);
-        // $filesize = $this->formatBytes($filesize);
-        // // get video bitrate
-        // $bitrate = $ffprobe->format($fileToUpload)
-        //   ->get('bit_rate');
-        // $bitrate = $this->formatBytes($bitrate);
-        // //creating an instance of video class
+       
         $video = new Video();
         $video->title = $title;
         $video->tag = $tags;
@@ -225,12 +184,18 @@ class VideosController extends Controller
         // $video->bitrate = $bitrate;
         $video->video_link = uniqid();
         $video->producer = auth()->user()->name;
-       // $res= Ipdata::lookup();
-       //$country = $res->country_name;
-       // $video->country = $country;
+       
         $video->user_id = auth()->user()->id;
+        $user = User::find($video->user_id);
          
-        $video->save();
+        $user->videos()->saveMany([$video]);
+        
+        // $lv = new Latest();
+        
+        // $video->latestVideo()->update([$lv]);
+        // $lv->save();
+        print_r($video->id);
+        $path = $video_file->storeAs('public/video-bank', $fileToUpload);
         return back()
           ->withSuccess('Successfully uploaded!')
           ->with([

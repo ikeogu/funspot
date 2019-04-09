@@ -26,7 +26,7 @@
   <link href="{{asset('vendor/nucleo/css/nucleo.css')}}" rel="stylesheet">
   <link href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
   <!-- Argon CSS -->
-  
+ 
 </head>
 
 
@@ -46,7 +46,6 @@
   <script src="{{asset('vendor/popper/popper.min.js') }}"></script>
   <script src="{{asset('vendor/bootstrap/bootstrap.min.js') }}"></script>
   <script src="{{asset('vendor/headroom/headroom.min.js') }}"></script>
-  <!-- Argon JS -->
-  <script src="{{asset('js/argon.js') }}"></script>
+  
      <script src="{{ mix('js/app.js') }}"></script>
 </html>

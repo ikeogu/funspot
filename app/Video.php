@@ -1,14 +1,16 @@
 <?php
 
 namespace App;
-
-
-
+use Overtrue\LaravelFollow\Traits\CanBeLiked;
+use Overtrue\LaravelFollow\Traits\CanBeFavorited;
+use Overtrue\LaravelFollow\Traits\CanBeVoted;
+use Overtrue\LaravelFollow\Traits\CanBeBookmarked;
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
 {
-    
+    use CanBeLiked, CanBeFavorited, CanBeVoted, CanBeBookmarked;
      /**
      * The attributes that are mass assignable.
      *
@@ -25,17 +27,28 @@ class Video extends Model
      */
    
     public function user(){
-        return $this->belongsTo()('App\User');
+        return $this->belongsTo(User::class,'id');
      }
      public function comments()
     {
     	return $this->hasMany('App\Comment');
     }
 
-    public function likes(){
-        return $this->hasMany('App\Like');
+    
+
+    public function likes()
+    {
+        return $this->morphToMany('App\User', 'likeable')->whereDeletedAt(null);
     }
-    public function unlikes(){
-        return $this->hasMany('App\Unlike');
+    
+    public function getIsLikedAttribute()
+    {
+        $like = $this->likes()->whereUserId(Auth::id())->first();
+        return (! is_null($like)) ? true : false;
+    }
+
+    public function latestVideo()
+    {
+        return $this->belongsTo(Latest::class);
     }
 }

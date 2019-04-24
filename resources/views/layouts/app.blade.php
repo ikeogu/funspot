@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'FunSpot') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+   
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -39,7 +39,7 @@
             </section>
         </main>
     </body>
-    <script src="{{asset('js/app.js')}}"></script>
+   
      <!-- Scripts -->
      <!-- Core -->
   <script src="{{asset('vendor/jquery/jquery.min.js') }}"></script>

@@ -16,13 +16,16 @@ Route::get('/videos', function () {
 });
 
 
-Auth::routes();
+Auth::routes(['verify'=>true]);
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('videos','VideosController');
 Route::get('/watch?=','VideosController@show');
 Route::get('/uploadvideo','VideosController@create')->name('upload');
 Route::post('/profile', 'UserController@update_avatar');
+Route::get('/users/{key}/profile','UserController@show');
 Route::post('/upload','VideosController@store')->name('vstore');
 Route::resource('comment','CommentsController');
 Route::resource('replycomment','ReplyCommentsController');
@@ -50,5 +53,24 @@ Route::any('/search', function () {
 Route::get('comment/like/{id}', ['as' => 'comment.like', 'uses' => 'LikeController@likeComment']);
 Route::get('video/like/{id}', ['as' => 'video.like', 'uses' => 'LikeController@likeVideo']);
 
+//Admin Dashboard
+Route::get('/admin_dashs', 'AdminPanel\AdminPages@index')->name('admin-dash');
+
+Route::get('/admin_dash/videos', 'AdminPanel\AdminPages@videos')->name('allv');
+Route::get('/admin_dash/comments', 'AdminPanel\AdminPages@comments')->name('comments');
+
+Route::get('/admin_dash/users', 'AdminPanel\AdminPages@users')->name('allu');
+Route::get('/admin_dash/suggestions', 'AdminPanel\AdminPages@suggestions')->name('sug');
+
+
+Route::get('/admin_dash/flagged-videos', 'AdminPanel\AdminPages@flagVideos')->name('fvideos');
+
+Route::post('/block_user/{key}/block','UserController@block')->name('block');
+Route::post('/unblock_user/{key}/unblock','UserController@unblock')->name('unblock');
+Route::post('/flag_video/{key}/flag','FlagvideoController@flagged')->name('flag');
+Route::post('/unflag_video/{key}/unflag','FlagvideoController@unflagged')->name('unflag');
+
+//suggesstion box
+Route::resource('suggestion','SuggesstionController');
 
 

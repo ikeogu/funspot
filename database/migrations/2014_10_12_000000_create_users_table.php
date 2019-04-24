@@ -18,10 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('country');
             $table->string('email')->unique();
+            $table->string('type')->default('default');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('passport')->default('user.png');
             $table->string('password');
-            $table->integer('role_id')->default('3');
+            $table->integer('role_id');
             $table->rememberToken();
             $table->timestamps();
         });

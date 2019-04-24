@@ -13,10 +13,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use  Notifiable,CanFollow, CanBookmark, CanLike, CanFavorite, CanSubscribe, CanVote;
-    
+    const ADMIN_TYPE = 'admin';
+    const MODERATOR = 'moderator';
+    const DEFAULT_TYPE = 'user';
+
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','country',
+        'name', 'email', 'password','country','city',
     ];
 
     /**
@@ -39,7 +42,7 @@ class User extends Authenticatable
        return $this->hasMany(Video::class);
     }
     public function roles(){
-        return $this->belongsToMany('App\Role');
+        return $this->hasOne('App\Role');
     }
 
     public function comments(){
@@ -49,8 +52,22 @@ class User extends Authenticatable
         return $this->hasMany('App\ReplyComment');
     }
 
-    public function likedVideos()
+    public function likes()
     {
-        return $this->morphedByMany('App\Video', 'likeable')->whereDeletedAt(null);
+        return $this->hasMany('App\Like');
+    }
+
+    public function verifyUser()
+    {
+    return $this->hasOne('App\VerifyUser');
+    }
+
+    public function flagvideo()
+    {
+    return $this->hasOne('App\FlagVideo');
+    }
+
+    public function suggestion(){
+    return $this->hasMany('App\Suggestion');
     }
 }

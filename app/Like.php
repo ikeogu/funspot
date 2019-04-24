@@ -25,8 +25,13 @@ class Like extends Model
     /**
      * Get all of the posts that are assigned this like.
      */
-    public function videos()
+    public function video()
     {
-        return $this->morphedByMany('App\Video', 'likeable');
+        return $this->belongsTo('App\Video');
+    }
+
+     public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 }

@@ -47961,10 +47961,15 @@ var app = new Vue({
 // })
 
 $('.h-menu').click(function () {
-  $('.side-menu-modal').show();
+  $('.side-menu-modal').toggle();
 });
 $('.close-bar').click(function () {
   $('.side-menu-modal').hide();
+});
+$('.hdash').click(function () {
+  $('.bar-placeholder').toggle();
+  $('.s-bar').toggle();
+  $(".mDiv").toggleClass('Width');
 });
 
 window.onclick = function (even) {
@@ -48076,7 +48081,7 @@ function uploadIt(i) {
 
 function vidBoxHtml(cou, title, id) {
   var token = $('input[name=_token]');
-  return "<div class=\"ap-box in-list\" data-id=\"".concat(id, "\">\n        <div class=\"f-header\"><p class=\"\">").concat(cou, "</p><span class=\"float-right\"></span></div>\n        <form class=\"v-fm\" method=\"POST\" enctype=\"multipart/form-data\">\n        <div class=\"v-thumbnail\"></div>\n        <div class=\"float-right x-close\" data-id=\"").concat(id, "\"><span title=\"remove\">x</span></div>\n        <div class=\"upl-box\">\n            <div class=\"v-ti\"><span></span></div>\n            <div class=\"up-note\"><span id=\"perc\">Waiting&hellip;</span> <span id=\"per\">0%</span></div>\n            <div class=\"pro-bar\"><span></span></div>\n        </div>\n        <div class=\"v-meta\">\n        <input type=\"hidden\" name=\"_token\" value=\"").concat(token.val(), "\">\n            <div class=\"form-group\">\n                <label>Title</label><br>\n                <input type=\"text\" name=\"title\" class=\"form-control v-title\" value=\"").concat(title, "\">\n            </div>\n            <div class=\"form-group\">\n                <label>Description</label><br>\n                <textarea name=\"desc\" class=\"form-control\"></textarea><br>\n            </div>\n            <div class=\"form-group\">\n                <label>Tag</label><br>\n                <input type=\"text\" name=\"tags\" class=\"form-control v-tag\">\n            </div>\n        </div>\n        </form>\n    </div>");
+  return "<div class=\"ap-box in-list\" data-id=\"".concat(id, "\">\n        <div class=\"f-header\"><p class=\"\">").concat(cou, "</p><span class=\"float-right\"></span></div>\n        <form class=\"v-fm\">\n        <div class=\"v-thumbnail\"></div>\n        <div class=\"float-right x-close\" data-id=\"").concat(id, "\"><span title=\"remove\">x</span></div>\n        <div class=\"upl-box\">\n            <div class=\"v-ti\"><span></span></div>\n            <div class=\"up-note\"><span id=\"perc\">Waiting&hellip;</span> <span id=\"per\">0%</span></div>\n            <div class=\"pro-bar\"><span></span></div>\n        </div>\n        <div class=\"v-meta\">\n        <input type=\"hidden\" name=\"_token\" value=\"").concat(token.val(), "\">\n            <div class=\"form-group\">\n                <label>Title</label><br>\n                <input type=\"text\" name=\"title\" class=\"form-control v-title\" value=\"").concat(title, "\">\n            </div>\n            <div class=\"form-group\">\n                <label>Description</label><br>\n                <textarea name=\"desc\" class=\"form-control\"></textarea><br>\n            </div>\n            <div class=\"form-group\">\n                <label>Tag</label><br>\n                <input type=\"text\" name=\"tags\" class=\"form-control v-tag\">\n            </div>\n        </div>\n        </form>\n    </div>");
 }
 
 var comp = 0;
@@ -48103,7 +48108,6 @@ function ajxUpl(ajaxData, index) {
       },
       data: ajaxData,
       complete: function complete(da) {
-        console.log(da.responseText);
         var v = $('#upd').html();
         var pInt = parseInt(v) + 1;
         $('#upd').html(pInt);
@@ -48290,6 +48294,11 @@ function getFileThumbnail(fileOB, i) {
     fileReader.readAsArrayBuffer(file);
     return true;
   }
+
+  $('.like').on('click', function (event) {
+    var isLike = event.target.parentElementSiblings == null ? true : false;
+    console.log(isLike);
+  });
 }
 
 /***/ }),

@@ -41,11 +41,17 @@ const app = new Vue({
 
 
 $('.h-menu').click(function () {
-    $('.side-menu-modal').show();
+    $('.side-menu-modal').toggle();
 })
 
 $('.close-bar').click(function() {
     $('.side-menu-modal').hide();
+})
+
+$('.hdash').click(function() {
+    $('.bar-placeholder').toggle();
+    $('.s-bar').toggle();
+    $(".mDiv").toggleClass('Width');
 })
 
 window.onclick = function (even) {
@@ -162,7 +168,7 @@ function  vidBoxHtml(cou,title,id) {
     var token = $('input[name=_token]');
     return `<div class="ap-box in-list" data-id="${id}">
         <div class="f-header"><p class="">${cou}</p><span class="float-right"></span></div>
-        <form class="v-fm" method="POST" enctype="multipart/form-data">
+        <form class="v-fm">
         <div class="v-thumbnail"></div>
         <div class="float-right x-close" data-id="${id}"><span title="remove">x</span></div>
         <div class="upl-box">
@@ -215,7 +221,6 @@ function ajxUpl(ajaxData,index) {
             },
             data: ajaxData,
             complete: function (da) {
-                console.log(da.responseText)
                 var v = $('#upd').html();
                 var pInt = parseInt(v) + 1;
                 $('#upd').html(pInt);
@@ -401,4 +406,9 @@ function getFileThumbnail(fileOB,i) {
         fileReader.readAsArrayBuffer(file);
         return true;
     }
+
+    $('.like').on('click',function(event){
+        var isLike = event.target.parentElementSiblings == null ? true : false;
+        console.log(isLike);
+    });
 }

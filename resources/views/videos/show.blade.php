@@ -5,7 +5,7 @@
 <div class="con-single">
 	
 		<div class="col-lg-12 ">
-		<video width="1200" height="400" controls  autoplay >  
+		<video width="990" height="400" controls  autoplay  id="videoElementID">  
 			<source src="{{URL::asset('movie.mp4')}}" type="video/mp4">  
 			<source src="{{URL::asset('movie.ogg')}}" type="video/ogg"> 
 			<source src="/storage/video-bank/{{$video->video_file}}" type="video/mp4"> 
@@ -22,33 +22,36 @@
 		<div class="post-meta-single">
 			<div class="row show-grid action-box">
 				<span class="col-md-3">
-				@if ($video->isLiked)
-				  <span class="col-md-3"><span><a href="{{  route('video.like', $video->id) }}"><i class="fa fa-thumbs-down"></i>{{ $video->likes()->count() }} <</span>
-        		@else
-				  <span class="col-md-3"><span> <a href="{{ route('video.like', $video->id) }}"><i class="fa fa-thumbs-up"></i>{{ $video->likes()->count() }}</a></span></span>
-       			 @endif
-				<span class="col-md-3"><span><a href=""><i class="fa fa-list"></i><sup><i class="fa fa-plus-square"></i></sup></a></span></span>
-				<span class="col-md-3"><span><a href=""><i class="fa fa-share-square"></i><sup><i class="fa fa-user-circle"></i></sup></a></span></span>
+				<a href="#" class="like" id="like"> <i class="fa fa-thumbs-up"></i> 25 </a> </span>
+				<span class="col-md-3"><span><a href="#" id="like"> <i class="fa fa-thumbs-down"></i> 25 </a></span> </span>
+				<span class="col-md-3"><span><a href=""><i class="fa fa-list"></i><span>
+				<span class="col-md-3">
+					<span>
+						<form action="{{route('flag',[$video->id])}}" method="POST">
+                			 @csrf
+							 <button type="submit" class="btn-primary">
+								<i class="fa fa-flag"></i>
+							</button>
+                        </form>
+						
+					</span>
+				</span>
+				<span class="col-md-3"><span><a href=""><i class="fa fa-share-square"></i><span><i class="fa fa-user-circle"></i></span></a></span></span>
 			</div>
-			<p><span class="glyphicon glyphicon-search"></span> By {{$video->producer}}</a></p>
+			<p><span class="glyphicon glyphicon-search"></span> By {{$video->producer}}</p>
 			<div class="post-desc">
 				<p>{{$video->description}}</p>
 			</div>
 		</div>
-        
-        <span></span>
-		<hr>
 		<div id="backend-comment" style="margin-top: 50px;">
-			<h3> Comments <small> {{ $video->comments()->count() }} total</small></h3>
+			<h3> Comments <small> ({{ $video->comments()->count() }} )</small></h3>
 
 		<table class="table table-stripped ">
 			<thead>
 				<tr>
 				
 				<th>Comment</th>
-				<th width="70px;"></th>
-				</tr>
-				
+							
 			</thead>
 			<tbody>
 				@foreach($video->comments as $comment)
@@ -71,7 +74,7 @@
 								<label>Reply</label><br>
 								<textarea name="body" class="form-control"></textarea><br>
 							</div>
-							<button class="btn btn-primary btn-md" type="submit">Post</button>
+							<button class="btn btn-primary btn-md" type="submit">reply</button>
 						</form>
 					</div>
 					</td>
@@ -85,8 +88,6 @@
 		</table>
 
 		</div>
-		</div>
-        <span></span>
 		<div class="post-comments">
 			<form action="{{route('comment.store')}}" method="POST">
 				@csrf
@@ -95,56 +96,30 @@
 					<label>Comment</label><br>
 					<textarea name="body" class="form-control"></textarea><br>
 				</div>
-				<button class="btn btn-primary" type="submit">Post Comment</button>
+				<button class="btn btn-primary" type="submit">Comment</button>
 			</form>
 		</div>
-
-		</div>
 	</div>
+	<div class="side-bar bs-docs-grid row show-grid">
+		@for($i = 0; $i < 10; $i++)
+			<div class="in-p col-md-6">
+				<div class="rel-post-thumbnail2">
+				
+				</div>
+				<div class="rel-post-data2">
+					<div class="rel-post-title2">
+						<a href="#">Test Title</a>
+					</div>
+					<div class="rel-post-meta2">
+
+					</div>
+				</div>
+			</div>
+		@endfor
+	</div>
+    
 	
 </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {     
 
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-
-        $('i.fa-thumbs-up, i.fa-thumbs-down').click(function(){    
-            var id = $(this).parents(".panel").data('id');
-            var c = $('#'+this.id+'-bs3').html();
-            var cObjId = this.id;
-            var cObj = $(this);
-
-
-            $.ajax({
-               type:'POST',
-               url:'/ajaxRequest',
-               data:{id:id},
-               success:function(data){
-                  if(jQuery.isEmptyObject(data.success.attached)){
-                    $('#'+cObjId+'-bs3').html(parseInt(c)-1);
-                    $(cObj).removeClass("like-video");
-                  }else{
-                    $('#'+cObjId+'-bs3').html(parseInt(c)+1);
-                    $(cObj).addClass("like-video");
-                  }
-               }
-            });
-
-
-        });      
-
-
-        $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
-            event.preventDefault();
-            $(this).ekkoLightbox();
-        });                                        
-    }); 
-</script>
 @endsection

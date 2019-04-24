@@ -23,6 +23,7 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+   
 
     /**
      * Where to redirect users after registration.
@@ -66,12 +67,33 @@ class RegisterController extends Controller
     {
        $res= Ipdata::lookup();
        $country = $res->country_name;
+       $city =  $res->city;
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-
+            'city'=> $city,
             'country'=> $country,
+            'role_id'=>roles()->associate(3),
         ]);
+      
+       
     }
+    // public function verifyUser($token)
+    // {
+    //     $verifyUser = VerifyUser::where('token', $token)->first();
+    //     if(isset($verifyUser) ){
+    //         $user = $verifyUser->user;
+    //         if($user->status== 0) {
+    //         $verifyUser->user->status = 1;
+    //         $verifyUser->user->save();
+    //         $message = "Your e-mail is verified. You can now login.";
+    //         } else {
+    //         $message = "Your e-mail is already verified. You can now login.";
+    //         }
+    //     } else {
+    //         return redirect('/login')->with('warning', "Sorry your email cannot be identified.");
+    //     }
+    //     return redirect('/login')->with('status', $status);
+    // }
 }

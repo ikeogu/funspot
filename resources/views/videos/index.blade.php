@@ -32,5 +32,7 @@
 		</div>
 
 		
+		<a href="#" class="like"> <i class="fa fa-thumbs-up"></i> 25 </a></span> </span>
+				<span class="col-md-3"><span><a href="#" class="like"> <i class="fa fa-thumbs-down"></i> 25 </a></span> </span>
 
 @endsection

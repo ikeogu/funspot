@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\User;
 
 class UserController extends Controller
 {
@@ -44,10 +45,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+   
+
+   
 
     /**
      * Show the form for editing the specified resource.
@@ -94,6 +94,14 @@ class UserController extends Controller
     {
         //
     }
+
+    public function show($id){
+        $u = User::find($id);
+       
+        return view('user.show',['u'=>$u]);
+    }
+
+
     public function profile()
     {
         $user = Auth::user();
@@ -119,4 +127,28 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
    
+    public function block($id){
+        
+        $user = User::find($id);
+
+        if($user->status == Null){
+           
+            $user->status = 0;
+            $user ->save();
+        }
+        return back()->withMessage('success','{{$user->name}} has been blocked');
+
+    }
+    public function unblock($id){
+
+        $user = User::find($id);
+
+        if($user->status == 0){
+           
+            $user->status = 1;
+            $user ->save();
+        }
+        return back()->withMessage('success','{{$user->name}} has been Unblocked');
+
+    }
 }

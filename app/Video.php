@@ -31,24 +31,24 @@ class Video extends Model
      }
      public function comments()
     {
-    	return $this->hasMany('App\Comment');
+    	return $this->hasMany('App\Comment','video_id');
     }
 
     
 
     public function likes()
     {
-        return $this->morphToMany('App\User', 'likeable')->whereDeletedAt(null);
+        return $this->hasMany('App\Like');
     }
     
-    public function getIsLikedAttribute()
-    {
-        $like = $this->likes()->whereUserId(Auth::id())->first();
-        return (! is_null($like)) ? true : false;
-    }
+    
 
     public function latestVideo()
     {
         return $this->belongsTo(Latest::class);
+    }
+    public function flagvideos()
+    {
+        return $this->hasMany(FlagVideo::class,'flag');
     }
 }

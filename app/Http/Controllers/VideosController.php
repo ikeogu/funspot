@@ -10,6 +10,7 @@ use FFMPEG;
 use Uuid;
 use DB;
 use FFMpeg\FFProbe;
+use App\Like;
 use App\Latest;
 use App\VideoView;
 use Illuminate\Support\Facades\File;
@@ -61,8 +62,6 @@ class VideosController extends Controller
      */
     public function show(Video $video)
     {
-        
-        
         $video = Video::find($video->id);
         \App\VideoView::createViewLog($video);
         
@@ -73,15 +72,12 @@ class VideosController extends Controller
     public function trending(Video $video)
     {
 
-        
-
         //or add `use App\PostView;` in beginning of the file in order to use only `PostView` here 
 
         $video = Video::join("video_views", "video_views.id", "=", "videos.id")
             
             ->groupBy("videos.id")
-            ->orderBy(DB::raw('COUNT(videos.id)'), 'desc')//here its very minute mistake of a paranthesis in Jean Marcos' answer, which results ASC ordering instead of DESC so be careful with this line
-            ->get([DB::raw('COUNT(videos.id) as total_views'), 'videos.*']);
+            ->orderBy(DB::raw('COUNT(videos.id)'), 'desc')->get([DB::raw('COUNT(videos.id) as total_views'), 'videos.*']);
             return view('videos.trending',['video'=>$video]);
     }
 
@@ -224,4 +220,6 @@ class VideosController extends Controller
     }
     return $ra;
   }
+
+ 
 }

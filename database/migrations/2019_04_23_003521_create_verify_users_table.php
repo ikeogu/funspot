@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-
-class CreateLikeablesTable extends Migration
+class CreateVerifyUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +13,9 @@ class CreateLikeablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('likeables', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('verify_users', function (Blueprint $table) {
             $table->integer('user_id');
-            $table->integer('likeable_id');
-            $table->string('likeable_type');
-            $table->softDeletes();
+            $table->string('token');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreateLikeablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('likeables');
+        Schema::dropIfExists('verify_users');
     }
 }

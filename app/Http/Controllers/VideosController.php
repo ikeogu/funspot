@@ -15,6 +15,7 @@ use App\Latest;
 use App\VideoView;
 use Illuminate\Support\Facades\File;
 use Kielabokkie\LaravelIpdata\Facades\Ipdata;
+use Spatie\Activitylog\Models\Activity;
 
 class VideosController extends Controller
 {
@@ -63,7 +64,13 @@ class VideosController extends Controller
     public function show(Video $video)
     {
         $video = Video::find($video->id);
+        $user = 3;
         \App\VideoView::createViewLog($video);
+        activity('Watched')
+        ->performedOn($video)
+        ->causedBy($user)
+        ->withProperties(['user_id' => 'id','videos_id' => 'id'])
+        ->log('Viewed '.$video->title);
         
         return view('videos.show', ['video'=>$video]);
         
@@ -77,7 +84,7 @@ class VideosController extends Controller
         $video = Video::join("video_views", "video_views.id", "=", "videos.id")
             
             ->groupBy("videos.id")
-            ->orderBy(DB::raw('COUNT(videos.id)'), 'desc')->get([DB::raw('COUNT(videos.id) as total_views'), 'videos.*']);
+            ->orderBy(DB::raw('COUNT(videos.id)'> 20), 'desc')->get([DB::raw('COUNT(videos.id) as total_views'), 'videos.*']);
             return view('videos.trending',['video'=>$video]);
     }
 
@@ -106,7 +113,7 @@ class VideosController extends Controller
 
     public function latest(){
         $ls= Video::orderBy('created_at', 'desc')->orderBy('id', 'asc')->get();
-        ($ls);
+       
         return view('videos.latest',['ls'=>$ls]);
     }
 
@@ -197,6 +204,14 @@ class VideosController extends Controller
           ->with([
             'title' => $title
           ]);
+
+        //to activity check
+        activity('Upload')
+        ->performedOn($video)
+        ->causedBy($user)
+        ->withProperties(['user_id' => '$user','videos_id' => '$video->id'])
+        ->log('Uploaded '.$video->title);
+          
 
     }
     

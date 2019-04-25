@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -68,15 +69,23 @@ class RegisterController extends Controller
        $res= Ipdata::lookup();
        $country = $res->country_name;
        $city =  $res->city;
+        $userRole = new Role();
+        $userRole->users()->associate(3);
+        
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'city'=> $city,
             'country'=> $country,
-            'role_id'=>roles()->associate(3),
+            'role_id'=> $userRole,
         ]);
-      
+        activity('SignedUp')
+        ->performedOn($data)
+        ->causedBy($user)
+        ->withProperties(['user_id' => '$user->id'])
+        ->log('Registered '.$user->name);
+        
        
     }
     // public function verifyUser($token)

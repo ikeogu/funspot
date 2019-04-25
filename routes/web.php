@@ -34,6 +34,7 @@ Route::get('comment/{key}/delete','CommentsController@delete')->name('comments.d
 Route::get('/funspot','VideosController@video');
 Route::get('/latest_commedy','VideosController@latest')->name('latest');
 Route::get('/trending_commedy','VideosController@trending')->name('trending');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::post('ajaxRequest', 'HomeController@ajaxRequest')->name('ajaxRequest');
 Route::resource('likes','LikeController');
@@ -54,7 +55,7 @@ Route::get('comment/like/{id}', ['as' => 'comment.like', 'uses' => 'LikeControll
 Route::get('video/like/{id}', ['as' => 'video.like', 'uses' => 'LikeController@likeVideo']);
 
 //Admin Dashboard
-Route::get('/admin_dashs', 'AdminPanel\AdminPages@index')->name('admin-dash');
+Route::get('/admin_dash', 'AdminPanel\AdminPages@index')->name('admin-dash');
 
 Route::get('/admin_dash/videos', 'AdminPanel\AdminPages@videos')->name('allv');
 Route::get('/admin_dash/comments', 'AdminPanel\AdminPages@comments')->name('comments');
@@ -72,5 +73,7 @@ Route::post('/unflag_video/{key}/unflag','FlagvideoController@unflagged')->name(
 
 //suggesstion box
 Route::resource('suggestion','SuggesstionController');
+Route::get('activity','AcitivityController@doactivity');
+
 
 

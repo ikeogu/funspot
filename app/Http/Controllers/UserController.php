@@ -135,8 +135,14 @@ class UserController extends Controller
            
             $user->status = 0;
             $user ->save();
+
+            activity('Block')
+            ->performedOn($user)
+            ->causedBy($user)
+            ->withProperties(['user_id' => 'id','user_id' => 'id'])
+            ->log('BLocked '.$user->name);
         }
-        return back()->withMessage('success','{{$user->name}} has been blocked');
+        return back()->withMessage('success', $user->name.' has been blocked');
 
     }
     public function unblock($id){
@@ -148,7 +154,7 @@ class UserController extends Controller
             $user->status = 1;
             $user ->save();
         }
-        return back()->withMessage('success','{{$user->name}} has been Unblocked');
+        return back()->withMessage('success', $user->name.'has been Unblocked');
 
     }
 }

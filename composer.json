@@ -20,7 +20,7 @@
         "overtrue/laravel-like": "^1.0",
         "pbmedia/laravel-ffmpeg": "^3.0",
         "php-ffmpeg/php-ffmpeg": "^0.13.0",
-        "spatie/laravel-activitylog": "^3.5",
+        "spatie/laravel-activitylog": "3.0",
         "webpatser/laravel-uuid": "^3.0",
         "yanmarques/lincable": "^1.0"
     },

@@ -5,9 +5,10 @@
         <div class="over-v">
             <div><h5>Total Videos</h5><span>{{App\Video::count()}}</span></div>
             <div><h5>Total Users</h5><span>{{App\User::count()}}</span></div>
-            <div><h5>Today's SignUps</h5><span>4,100</span></div>
-            <div><h5>Users Activities(Today)</h5><span>5,045</span></div>
+            <div><h5>Today's SignUps</h5><span>{{App\User::whereDate('created_at', '>=', date('Y-m-d H:i:s',strtotime('-1 days')) )->count()}}</span></div>
+            <div><h5>Users Activities(Today)</h5><span>{{Spatie\Activitylog\Models\Activity::whereDate('created_at', '>=', date('Y-m-d H:i:s',strtotime('-1 days')) )->count()}}</span></div>
             
+        ;
         </div>
         <div class="grh">
             <div class="col-md-12">

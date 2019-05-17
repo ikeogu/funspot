@@ -12,6 +12,7 @@
         "amranidev/laracombee": "^0.1.31",
         "cybercog/laravel-love": "^6.0",
         "fideloper/proxy": "^4.0",
+        "jorenvanhocht/laravel-share": "^2.0",
         "kielabokkie/laravel-ipdata": "^0.2.1",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",

@@ -52,7 +52,7 @@ Route::any('/search', function () {
     }
 } )->name('search');
 Route::get('comment/like/{id}', ['as' => 'comment.like', 'uses' => 'LikeController@likeComment']);
-Route::get('video/like/{id}', ['as' => 'video.like', 'uses' => 'LikeController@likeVideo']);
+
 
 //Admin Dashboard
 Route::get('/admin_dash', 'AdminPanel\AdminPages@index')->name('admin-dash');
@@ -74,6 +74,12 @@ Route::post('/unflag_video/{key}/unflag','FlagvideoController@unflagged')->name(
 //suggesstion box
 Route::resource('suggestion','SuggesstionController');
 Route::get('activity','AcitivityController@doactivity');
+
+//for like video
+Route::post('/like',['uses'=>'VideosController@likevideo', 'as' =>'like']);
+Route::get('/countlike/{key}',['uses'=>'VideosController@countlike', 'as' =>'countlike']);
+Route::get('/discount/{key}',['uses'=>'VideosController@countdislike', 'as' =>'discount']);
+
 
 
 

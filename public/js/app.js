@@ -48293,12 +48293,11 @@ function getFileThumbnail(fileOB, i) {
 
     fileReader.readAsArrayBuffer(file);
     return true;
-  }
+  } // $('.like').on('click',function(event){
+  //     var isLike = event.target.parentElementSiblings == null ? true : false;
+  //    console.log(isLike);
+  // });
 
-  $('.like').on('click', function (event) {
-    var isLike = event.target.parentElementSiblings == null ? true : false;
-    console.log(isLike);
-  });
 }
 
 /***/ }),

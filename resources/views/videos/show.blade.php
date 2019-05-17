@@ -6,8 +6,7 @@
 	
 		<div class="col-lg-12 ">
 		<video width="990" height="400" controls  autoplay  id="videoElementID">  
-			<source src="{{URL::asset('movie.mp4')}}" type="video/mp4">  
-			<source src="{{URL::asset('movie.ogg')}}" type="video/ogg"> 
+			
 			<source src="/storage/video-bank/{{$video->video_file}}" type="video/mp4"> 
 			
 			Your browser does not support the video tag.
@@ -21,9 +20,12 @@
                                                  
 		<div class="post-meta-single">
 			<div class="row show-grid action-box">
-				<span class="col-md-3">
-				<a href="#" class="like" id="like"> <i class="fa fa-thumbs-up"></i> 25 </a> </span>
-				<span class="col-md-3"><span><a href="#" id="like"> <i class="fa fa-thumbs-down"></i> 25 </a></span> </span>
+				<div class="interaction">
+					<a href="#" class="like" data-videoId="{{$video->id}}" id="lk" > like </a>
+					<span id="count" data-count="{{route('countlike',[$video->id])}}"></span> ~
+					<a href="#" class="like" data-videoId="{{$video->id}}" > Dislike </a>
+					<span id="discount"></span>
+				</div>
 				<span class="col-md-3"><span><a href=""><i class="fa fa-list"></i><span>
 				<span class="col-md-3">
 					<span>
@@ -41,6 +43,10 @@
 			<p><span class="glyphicon glyphicon-search"></span> By {{$video->producer}}</p>
 			<div class="post-desc">
 				<p>{{$video->description}}</p>
+				<div>
+					<h3>Share Video</h3>
+					
+				</div>
 			</div>
 		</div>
 		<div id="backend-comment" style="margin-top: 50px;">
@@ -123,3 +129,4 @@
 </div>
 
 @endsection
+

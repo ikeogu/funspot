@@ -42,10 +42,68 @@
    
      <!-- Scripts -->
      <!-- Core -->
-  <script src="{{asset('vendor/jquery/jquery.min.js') }}"></script>
+     <script src="{{asset('vendor/jquery/jquery.min.js') }}"></script>
   <script src="{{asset('vendor/popper/popper.min.js') }}"></script>
   <script src="{{asset('vendor/bootstrap/bootstrap.min.js') }}"></script>
   <script src="{{asset('vendor/headroom/headroom.min.js') }}"></script>
-  
-     <script src="{{ mix('js/app.js') }}"></script>
+  <script src="{{ asset('/js/app.js') }}"></script>
+  <script src="{{ mix('/js/app.js') }}"></script>
+  <script>
+        var token = '{{ Session::token() }}';
+        var urlLike = "{{ route('like') }}";
+        
+  </script>
+  <script>
+    var video = document.getElementById('lk');
+    var videoId = video.getAttribute("data-videoId");  
+    var count = '/countlike/' + videoId;
+    var discount = '/discount/' + videoId;
+    function like(){
+        $(document).ready(function(){
+            $.ajax({
+            type: "GET",
+            url: count,
+            success: function(data)
+            {
+                $('#count').text(data.count_like);
+            }
+            });
+        });
+    }      
+    function dislike(){
+        $(document).ready(function(){
+            $.ajax({
+            type: "GET",
+            url: discount,
+            success: function(data)
+            {
+                $('#discount').text(data.discount);
+            }
+            });
+        });  
+    }        
+    $('.like').on('click',function(event){
+        event.preventDefault();
+        var videoId = event.target.getAttribute("data-videoId");
+        console.log(videoId); 
+       
+        var isLike = event.target.previousElementSibling == null;
+        
+        $.ajax({
+           method:'POST',
+           url:urlLike,
+           data:{
+               isLike: isLike,
+               videoId: videoId,
+               _token: token,
+              
+           }
+        }).done(function(e){
+            like(); 
+            // dislike();
+        });      
+    });
+   
+</script>
+   
 </html>

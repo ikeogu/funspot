@@ -83,4 +83,36 @@ class CommentsController extends Controller
         
         return redirect()->route('videos.show', $video_id);
     }
+    public function likecomment(Request $request){
+        $comment_id = $request['commentId'];
+        $is_like = $request['islike'];
+        $update = false;
+        $comment = Comment::find($comment_id);
+        if(!$comment){
+            return null;
+        }
+        $user = Auth::user();
+        $like =$user->likes()->where('comment_id',$comment_id)->first();
+        if($like){
+            $already_like = $like->like;
+            $update =true;
+            if($already_like == $is_like){
+                $like->delete();
+                return null;
+            }
+        }else{
+            $like = new CommentLike();
+ 
+        }
+        $like->like = $is_like;
+        $like->user_id = $user->id;
+        $like->comment_id = $video->id;
+        if($update){
+            $like->update();
+ 
+        }else{
+            $like->save();
+            return null;
+        }
+    }
 }

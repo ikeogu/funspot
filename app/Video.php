@@ -1,16 +1,15 @@
 <?php
 
 namespace App;
-use Overtrue\LaravelFollow\Traits\CanBeLiked;
-use Overtrue\LaravelFollow\Traits\CanBeFavorited;
-use Overtrue\LaravelFollow\Traits\CanBeVoted;
-use Overtrue\LaravelFollow\Traits\CanBeBookmarked;
+
 use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+
 
 class Video extends Model
 {
-    use CanBeLiked, CanBeFavorited, CanBeVoted, CanBeBookmarked;
+    use Notifiable;
      /**
      * The attributes that are mass assignable.
      *
@@ -25,7 +24,19 @@ class Video extends Model
      *
      * @var array
      */
-   
+    
+
+    protected $shareOptions = [
+        'columns' => [
+            'title' => 'title'
+        ],
+        'url' => null
+    ];
+
+    // public function getUrlAttribute()
+    // {
+    //     return route('videos.show', $this->slug);
+    // }
     public function user(){
         return $this->belongsTo(User::class,'id');
      }

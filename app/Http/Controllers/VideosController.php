@@ -235,6 +235,56 @@ class VideosController extends Controller
     }
     return $ra;
   }
+  
+  
+  
+  
+  
+    public function likevideo(Request $request){
+       $video_id = $request['videoId'];
+       $is_like = $request['isLike'] === 'true';
+       $update = false;
+       $video = Video::find($video_id);
+       
+        if(!$video){
+           return null;
+        }
+       $user = Auth::user();
+       $like = $user->likes()->where('video_id', $video_id)->first();
+       
+        if($like){
+           $already_like = $like->like;
+           $update = true;
+          
+            if($already_like == $is_like){
+                $like->delete();
+                return null;
+            }
+        }else{
+           $like = new Like();
+        }
+       $like->like = $is_like;
+       $like->user_id = $user->id;
+       $like->video_id = $video->id;
+       //dd($like );
+       if($update){
+           $like->update();
+        }else{
+           $like->save();
+        }
+        return null;
+    }
+    public function countlike($id){
+        $video = Video::find($id);
+        $count_like = Like::with('video')->where('video_id',$video->id)->where('like',1)->count();
+        return response()->JSON(['count_like'=>$count_like]);
 
+    }
+    public function countdislike($id){
+        $video = Video::find($id);
+        $discount = Like::with('video')->where('video_id',$video->id)->where('like',0)->count();
+        return response()->JSON(['discount'=>$discount]);
+        
+    }
  
 }

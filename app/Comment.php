@@ -17,5 +17,9 @@ class Comment extends Model
    }
    public function recomments(){
     return $this->hasMany('App\ReplyComment');
- }
+    }
+    public function commentlikes()
+    {
+        return $this->hasMany('App\CommentLike');
+    }
 }
